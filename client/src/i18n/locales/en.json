@@ -1,0 +1,17 @@
+{
+  "app": {"title": "LinkDesk Local"},
+  "theme": {"dark": "Dark", "light": "Light", "auto": "Auto"},
+  "nav": {"dashboard": "Dashboard", "devices": "Devices", "files": "Files", "text": "Text & Links", "clipboard": "Clipboard", "screen": "Screen Share", "activity": "Activity", "settings": "Settings", "about": "About"},
+  "header": {"localNetwork": "Local Network", "secure": "Secure"},
+  "dashboard": {"title": "Dashboard", "desc": "Overview of connections and devices"},
+  "status": {"local": "Local Server"},
+  "pairing": {"title": "Pairing", "desc": "Create code on PC and enter on phone", "create": "Create pairing code", "expires": "Expires in 2 minutes", "codePlaceholder": "Code", "verify": "Verify & Pair", "success": "Paired successfully", "failed": "Failed", "errors": {"invalid": "Invalid", "used": "Used", "expired": "Expired", "too_many_attempts": "Too many attempts", "missing_code": "Enter code", "rate_limited": "Too many attempts"}},
+  "devices": {"title": "Devices", "desc": "Manage", "pageDesc": "Connected devices", "refresh": "Refresh", "empty": "No devices", "disconnect": "Disconnect"},
+  "files": {"title": "Files", "desc": "All except executables", "pageDesc": "Transfer files with no size limit", "drop": "Drop files here", "orClick": "or click to select", "selected": "Selected", "upload": "Send", "uploading": "Sending...", "success": "Sent", "failed": "Failed", "errors": {"file_not_allowed": "Not allowed", "blocked_extension": "Executables blocked", "invalid_path": "Invalid", "extension_not_allowed": "Unsupported", "no_extension": "No extension"}},
+  "text": {"title": "Text & Links", "desc": "Share", "pageDesc": "Share text and links", "placeholder": "Type here...", "send": "Send", "copy": "Copy", "clear": "Clear", "sent": "Sent"},
+  "clipboard": {"title": "Clipboard", "desc": "With permission", "pageDesc": "Clipboard transfer", "placeholder": "Content...", "read": "Read", "write": "Write", "readOk": "Read", "readDenied": "Denied", "writeOk": "Copied", "writeDenied": "Failed"},
+  "screen": {"title": "Screen Share", "desc": "Share to phone", "pageDesc": "WebRTC local sharing", "start": "Start", "stop": "Stop", "error": "Failed"},
+  "activity": {"title": "Activity", "desc": "History", "empty": "Empty"},
+  "settings": {"title": "Settings", "desc": "Customize", "appearance": "Appearance", "appearanceDesc": "Theme and colors", "theme": "Theme", "primaryColor": "Primary color", "density": "Density", "textSize": "Text size", "small": "Small", "medium": "Medium", "large": "Large", "compact": "Compact", "comfortable": "Comfortable", "reduceMotion": "Reduce motion", "language": "Language", "languageDesc": "Interface language", "reset": "Reset", "resetDesc": "Restore defaults", "resetBtn": "Reset"},
+  "about": {"title": "About", "desc": "Info", "privacy": "Works only locally, no external servers"}
+}

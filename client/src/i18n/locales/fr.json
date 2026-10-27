@@ -1,0 +1,17 @@
+{
+  "app": {"title": "LinkDesk Local"},
+  "theme": {"dark": "Sombre", "light": "Clair", "auto": "Auto"},
+  "nav": {"dashboard": "Tableau de bord", "devices": "Appareils", "files": "Fichiers", "text": "Texte & Liens", "clipboard": "Presse-papiers", "screen": "Partage d'écran", "activity": "Activité", "settings": "Paramètres", "about": "À propos"},
+  "header": {"localNetwork": "Réseau local", "secure": "Sécurisé"},
+  "dashboard": {"title": "Tableau de bord", "desc": "Vue d'ensemble"},
+  "status": {"local": "Serveur local"},
+  "pairing": {"title": "Appairage", "desc": "Créez un code depuis le PC et entrez-le sur le téléphone", "create": "Créer un code", "expires": "Expire dans 2 minutes", "codePlaceholder": "Code", "verify": "Vérifier", "success": "Appairé", "failed": "Échec", "errors": {"invalid": "Invalide", "used": "Utilisé", "expired": "Expiré", "too_many_attempts": "Trop de tentatives", "missing_code": "Entrez le code", "rate_limited": "Trop de tentatives"}},
+  "devices": {"title": "Appareils", "desc": "Gérer", "pageDesc": "Appareils connectés", "refresh": "Actualiser", "empty": "Aucun appareil", "disconnect": "Déconnecter"},
+  "files": {"title": "Fichiers", "desc": "Tout type sauf exécutables", "pageDesc": "Transfert sans limite", "drop": "Déposez ici", "orClick": "ou cliquez", "selected": "Sélectionnés", "upload": "Envoyer", "uploading": "Envoi...", "success": "Envoyé", "failed": "Échec", "errors": {"file_not_allowed": "Non autorisé", "blocked_extension": "Exécutables interdits", "invalid_path": "Invalide", "extension_not_allowed": "Non pris en charge", "no_extension": "Sans extension"}},
+  "text": {"title": "Texte & Liens", "desc": "Partager", "pageDesc": "Texte et liens", "placeholder": "Écrivez...", "send": "Envoyer", "copy": "Copier", "clear": "Effacer", "sent": "Envoyé"},
+  "clipboard": {"title": "Presse-papiers", "desc": "Avec autorisation", "pageDesc": "Transfert du presse-papiers", "placeholder": "Contenu...", "read": "Lire", "write": "Écrire", "readOk": "Lu", "readDenied": "Refusé", "writeOk": "Copié", "writeDenied": "Échec"},
+  "screen": {"title": "Partage", "desc": "Écran vers téléphone", "pageDesc": "WebRTC local", "start": "Démarrer", "stop": "Arrêter", "error": "Échec"},
+  "activity": {"title": "Activité", "desc": "Historique", "empty": "Vide"},
+  "settings": {"title": "Paramètres", "desc": "Personnaliser", "appearance": "Apparence", "appearanceDesc": "Thème et couleurs", "theme": "Thème", "primaryColor": "Couleur principale", "density": "Densité", "textSize": "Taille du texte", "small": "Petit", "medium": "Moyen", "large": "Grand", "compact": "Compact", "comfortable": "Confortable", "reduceMotion": "Réduire les animations", "language": "Langue", "languageDesc": "Langue de l'interface", "reset": "Réinitialiser", "resetDesc": "Valeurs par défaut", "resetBtn": "Réinitialiser"},
+  "about": {"title": "À propos", "desc": "Informations", "privacy": "Fonctionne uniquement en local"}
+}
