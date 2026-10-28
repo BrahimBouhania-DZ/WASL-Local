@@ -1,17 +1,198 @@
 {
-  "app": {"title": "LinkDesk Local"},
-  "theme": {"dark": "Dark", "light": "Light", "auto": "Auto"},
-  "nav": {"dashboard": "Dashboard", "devices": "Devices", "files": "Files", "text": "Text & Links", "clipboard": "Clipboard", "screen": "Screen Share", "activity": "Activity", "settings": "Settings", "about": "About"},
-  "header": {"localNetwork": "Local Network", "secure": "Secure"},
-  "dashboard": {"title": "Dashboard", "desc": "Overview of connections and devices"},
-  "status": {"local": "Local Server"},
-  "pairing": {"title": "Pairing", "desc": "Create code on PC and enter on phone", "create": "Create pairing code", "expires": "Expires in 2 minutes", "codePlaceholder": "Code", "verify": "Verify & Pair", "success": "Paired successfully", "failed": "Failed", "errors": {"invalid": "Invalid", "used": "Used", "expired": "Expired", "too_many_attempts": "Too many attempts", "missing_code": "Enter code", "rate_limited": "Too many attempts"}},
-  "devices": {"title": "Devices", "desc": "Manage", "pageDesc": "Connected devices", "refresh": "Refresh", "empty": "No devices", "disconnect": "Disconnect"},
-  "files": {"title": "Files", "desc": "All except executables", "pageDesc": "Transfer files with no size limit", "drop": "Drop files here", "orClick": "or click to select", "selected": "Selected", "upload": "Send", "uploading": "Sending...", "success": "Sent", "failed": "Failed", "errors": {"file_not_allowed": "Not allowed", "blocked_extension": "Executables blocked", "invalid_path": "Invalid", "extension_not_allowed": "Unsupported", "no_extension": "No extension"}},
-  "text": {"title": "Text & Links", "desc": "Share", "pageDesc": "Share text and links", "placeholder": "Type here...", "send": "Send", "copy": "Copy", "clear": "Clear", "sent": "Sent"},
-  "clipboard": {"title": "Clipboard", "desc": "With permission", "pageDesc": "Clipboard transfer", "placeholder": "Content...", "read": "Read", "write": "Write", "readOk": "Read", "readDenied": "Denied", "writeOk": "Copied", "writeDenied": "Failed"},
-  "screen": {"title": "Screen Share", "desc": "Share to phone", "pageDesc": "WebRTC local sharing", "start": "Start", "stop": "Stop", "error": "Failed"},
-  "activity": {"title": "Activity", "desc": "History", "empty": "Empty"},
-  "settings": {"title": "Settings", "desc": "Customize", "appearance": "Appearance", "appearanceDesc": "Theme and colors", "theme": "Theme", "primaryColor": "Primary color", "density": "Density", "textSize": "Text size", "small": "Small", "medium": "Medium", "large": "Large", "compact": "Compact", "comfortable": "Comfortable", "reduceMotion": "Reduce motion", "language": "Language", "languageDesc": "Interface language", "reset": "Reset", "resetDesc": "Restore defaults", "resetBtn": "Reset"},
-  "about": {"title": "About", "desc": "Info", "privacy": "Works only locally, no external servers"}
+  "app": {
+    "title": "WASL Local"
+  },
+  "theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "auto": "Auto"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "connect": "Connect Phone",
+    "devices": "Devices",
+    "files": "Files",
+    "text": "Text & Links",
+    "clipboard": "Clipboard",
+    "screen": "Screen Share",
+    "activity": "Activity",
+    "settings": "Settings",
+    "about": "About"
+  },
+  "header": {
+    "localNetwork": "Local Network – Connected",
+    "secure": "Secure",
+    "connecting": "Connecting…",
+    "offline": "Offline"
+  },
+  "target": {
+    "title": "Target Destination:",
+    "all": "All Devices (Broadcast)",
+    "allSelected": "Sending to all paired devices",
+    "countSelected": "devices selected",
+    "singleSelected": "device selected",
+    "noOtherDevices": "No other paired devices currently online"
+  },
+  "transfer": {
+    "consentTitle": "Incoming File Request",
+    "consentFrom": "Device",
+    "consentAction": "wants to send you this file:",
+    "accept": "Accept & Download",
+    "reject": "Decline"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "desc": "Overview of connections and devices"
+  },
+  "qr": {
+    "title": "QR Code to Connect",
+    "desc": "Scan from your phone to open the app directly",
+    "scan": "Scan this QR code with your phone camera",
+    "orManualCode": "Or enter manually:",
+    "pageTitle": "Connect Phone to PC",
+    "pageDesc": "Scan QR code to open LinkDesk on your phone",
+    "pairing": "Pairing…",
+    "pairingDesc": "Pairing device via QR code",
+    "connecting": "Connecting…",
+    "success": "Paired successfully",
+    "refresh": "Refresh",
+    "redirecting": "Redirecting…",
+    "retry": "Try again",
+    "failed": "Pairing failed",
+    "errorGenerate": "Failed to generate QR code"
+  },
+  "status": {
+    "local": "Local Server"
+  },
+  "pairing": {
+    "title": "Device Pairing",
+    "desc": "Create a pairing code and enter it from your phone",
+    "create": "Create pairing code",
+    "code": "Pairing Code",
+    "expires": "Expires in 2 minutes",
+    "codePlaceholder": "Enter pairing code",
+    "verify": "Verify & Pair",
+    "success": "Paired successfully",
+    "failed": "Pairing failed",
+    "errors": {
+      "invalid": "Invalid code",
+      "used": "Code already used",
+      "expired": "Code expired",
+      "too_many_attempts": "Too many attempts, please wait",
+      "missing_code": "Please enter the code",
+      "rate_limited": "Too many attempts, please wait",
+      "error": "Connection error"
+    }
+  },
+  "devices": {
+    "title": "Connected Devices",
+    "desc": "Manage paired devices",
+    "connected": "device(s) connected",
+    "pageDesc": "View and manage devices on the local network",
+    "refresh": "Refresh",
+    "empty": "No devices connected",
+    "disconnect": "Disconnect"
+  },
+  "files": {
+    "title": "Files",
+    "desc": "Transfer images, PDFs, Office docs, archives, text, and code",
+    "pageDesc": "Transfer files in both directions with no size limit",
+    "drop": "Drag and drop files here",
+    "orClick": "or click to select",
+    "selected": "Selected files",
+    "upload": "Send",
+    "uploading": "Sending…",
+    "success": "Sent successfully",
+    "failed": "Send failed",
+    "empty": "No files yet",
+    "received": "Files on Server",
+    "download": "Download",
+    "delete": "Delete",
+    "errors": {
+      "file_not_allowed": "File type not allowed",
+      "blocked_extension": "Executable files are blocked",
+      "invalid_path": "Invalid filename",
+      "extension_not_allowed": "Unsupported extension",
+      "no_extension": "File has no extension"
+    }
+  },
+  "text": {
+    "title": "Text & Links",
+    "desc": "Send text or links between devices",
+    "pageDesc": "Share text and links quickly",
+    "placeholder": "Type text or paste a link…",
+    "send": "Send",
+    "copy": "Copy",
+    "clear": "Clear",
+    "sent": "Sent",
+    "history": "Recent messages"
+  },
+  "clipboard": {
+    "title": "Clipboard",
+    "desc": "Read or write clipboard content with user permission",
+    "pageDesc": "Transfer clipboard content between devices",
+    "placeholder": "Clipboard content…",
+    "read": "Read Clipboard",
+    "write": "Write to Clipboard",
+    "readOk": "Clipboard read",
+    "readDenied": "Clipboard permission denied",
+    "writeOk": "Copied to clipboard",
+    "writeDenied": "Failed to write clipboard",
+    "sync": "Sync to devices",
+    "syncOk": "Synced to all devices",
+    "syncFailed": "Sync failed",
+    "remote": "From device:",
+    "useRemote": "Use this",
+    "usingRemote": "Using remote clipboard"
+  },
+  "screen": {
+    "title": "Screen Share",
+    "desc": "Share PC screen with your phone",
+    "pageDesc": "View PC screen on your phone",
+    "start": "Start Sharing",
+    "stop": "Stop Sharing",
+    "error": "Failed to start sharing",
+    "broadcastTab": "Broadcast My Screen",
+    "viewerTab": "Watch Stream",
+    "live": "LIVE",
+    "waitingStream": "Waiting for stream to start from PC...",
+    "connectStream": "Watch Stream",
+    "disconnectStream": "Disconnect Stream",
+    "browserWarning": "Click Start Sharing to choose the screen or window to stream via WebRTC"
+  },
+  "activity": {
+    "title": "Activity Log",
+    "desc": "Live log of all operations",
+    "empty": "No activity yet",
+    "wsConnected": "WebSocket Connected",
+    "wsConnecting": "Connecting…",
+    "wsDisconnected": "Disconnected – retrying…",
+    "clear": "Clear log"
+  },
+  "settings": {
+    "title": "Settings",
+    "desc": "Customize appearance and language",
+    "appearance": "Appearance",
+    "appearanceDesc": "Customize colors and mode",
+    "theme": "Theme",
+    "primaryColor": "Primary Color",
+    "density": "Density",
+    "textSize": "Text Size",
+    "small": "Small",
+    "medium": "Medium",
+    "large": "Large",
+    "compact": "Compact",
+    "comfortable": "Comfortable",
+    "reduceMotion": "Reduce motion",
+    "language": "Language",
+    "languageDesc": "Interface language",
+    "reset": "Reset Settings",
+    "resetDesc": "Restore default values",
+    "resetBtn": "Reset"
+  },
+  "about": {
+    "title": "About",
+    "desc": "About LinkDesk Local",
+    "privacy": "Runs locally only, no data sent to external servers"
+  }
 }

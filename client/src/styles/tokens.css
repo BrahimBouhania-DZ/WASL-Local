@@ -1,16 +1,16 @@
 :root {
-  --bg-primary: #0B1220;
-  --bg-card: #111C2E;
-  --bg-secondary: #18263A;
-  --bg-hover: #1e2d42;
-  --primary: #14B8A6;
-  --secondary: #38BDF8;
-  --text-primary: #F1F5F9;
+  --bg-primary: #0A111E;
+  --bg-card: #0F192C;
+  --bg-secondary: #16233B;
+  --bg-hover: #1D2E4D;
+  --primary: #00D4FF;
+  --secondary: #0088FF;
+  --text-primary: #F8FAFC;
   --text-secondary: #94A3B8;
-  --success: #22C55E;
+  --success: #10B981;
   --warning: #F59E0B;
   --error: #EF4444;
-  --border: #263449;
+  --border: #1E3050;
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
@@ -70,7 +70,7 @@
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !main;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }

@@ -1,4 +1,5 @@
 import crypto from 'crypto'
+import { generateDeviceToken, revokeDeviceToken } from '../security/auth.js'
 
 export type Device = {
   id: string
@@ -6,6 +7,7 @@ export type Device = {
   type: 'pc' | 'phone'
   connectedAt: number
   lastSeen: number
+  token?: string
 }
 
 const devices = new Map<string, Device>()
@@ -13,12 +15,14 @@ const sessions = new Map<string, { deviceId: string; socketId: string }>()
 
 export function addDevice(name: string, type: 'pc' | 'phone'): Device {
   const id = crypto.randomUUID()
+  const token = generateDeviceToken(id)
   const device: Device = {
     id,
     name,
     type,
     connectedAt: Date.now(),
-    lastSeen: Date.now()
+    lastSeen: Date.now(),
+    token
   }
   devices.set(id, device)
   return device
@@ -33,6 +37,7 @@ export function getDevice(id: string): Device | undefined {
 }
 
 export function removeDevice(id: string): boolean {
+  revokeDeviceToken(id)
   devices.delete(id)
   // remove sessions
   for (const [sid, s] of sessions.entries()) {

@@ -1,17 +1,198 @@
 {
-  "app": {"title": "LinkDesk Local"},
-  "theme": {"dark": "Sombre", "light": "Clair", "auto": "Auto"},
-  "nav": {"dashboard": "Tableau de bord", "devices": "Appareils", "files": "Fichiers", "text": "Texte & Liens", "clipboard": "Presse-papiers", "screen": "Partage d'écran", "activity": "Activité", "settings": "Paramètres", "about": "À propos"},
-  "header": {"localNetwork": "Réseau local", "secure": "Sécurisé"},
-  "dashboard": {"title": "Tableau de bord", "desc": "Vue d'ensemble"},
-  "status": {"local": "Serveur local"},
-  "pairing": {"title": "Appairage", "desc": "Créez un code depuis le PC et entrez-le sur le téléphone", "create": "Créer un code", "expires": "Expire dans 2 minutes", "codePlaceholder": "Code", "verify": "Vérifier", "success": "Appairé", "failed": "Échec", "errors": {"invalid": "Invalide", "used": "Utilisé", "expired": "Expiré", "too_many_attempts": "Trop de tentatives", "missing_code": "Entrez le code", "rate_limited": "Trop de tentatives"}},
-  "devices": {"title": "Appareils", "desc": "Gérer", "pageDesc": "Appareils connectés", "refresh": "Actualiser", "empty": "Aucun appareil", "disconnect": "Déconnecter"},
-  "files": {"title": "Fichiers", "desc": "Tout type sauf exécutables", "pageDesc": "Transfert sans limite", "drop": "Déposez ici", "orClick": "ou cliquez", "selected": "Sélectionnés", "upload": "Envoyer", "uploading": "Envoi...", "success": "Envoyé", "failed": "Échec", "errors": {"file_not_allowed": "Non autorisé", "blocked_extension": "Exécutables interdits", "invalid_path": "Invalide", "extension_not_allowed": "Non pris en charge", "no_extension": "Sans extension"}},
-  "text": {"title": "Texte & Liens", "desc": "Partager", "pageDesc": "Texte et liens", "placeholder": "Écrivez...", "send": "Envoyer", "copy": "Copier", "clear": "Effacer", "sent": "Envoyé"},
-  "clipboard": {"title": "Presse-papiers", "desc": "Avec autorisation", "pageDesc": "Transfert du presse-papiers", "placeholder": "Contenu...", "read": "Lire", "write": "Écrire", "readOk": "Lu", "readDenied": "Refusé", "writeOk": "Copié", "writeDenied": "Échec"},
-  "screen": {"title": "Partage", "desc": "Écran vers téléphone", "pageDesc": "WebRTC local", "start": "Démarrer", "stop": "Arrêter", "error": "Échec"},
-  "activity": {"title": "Activité", "desc": "Historique", "empty": "Vide"},
-  "settings": {"title": "Paramètres", "desc": "Personnaliser", "appearance": "Apparence", "appearanceDesc": "Thème et couleurs", "theme": "Thème", "primaryColor": "Couleur principale", "density": "Densité", "textSize": "Taille du texte", "small": "Petit", "medium": "Moyen", "large": "Grand", "compact": "Compact", "comfortable": "Confortable", "reduceMotion": "Réduire les animations", "language": "Langue", "languageDesc": "Langue de l'interface", "reset": "Réinitialiser", "resetDesc": "Valeurs par défaut", "resetBtn": "Réinitialiser"},
-  "about": {"title": "À propos", "desc": "Informations", "privacy": "Fonctionne uniquement en local"}
+  "app": {
+    "title": "WASL Local"
+  },
+  "theme": {
+    "dark": "Sombre",
+    "light": "Clair",
+    "auto": "Auto"
+  },
+  "nav": {
+    "dashboard": "Tableau",
+    "connect": "Connecter",
+    "devices": "Appareils",
+    "files": "Fichiers",
+    "text": "Texte & Liens",
+    "clipboard": "Presse-papiers",
+    "screen": "Écran",
+    "activity": "Activité",
+    "settings": "Paramètres",
+    "about": "À propos"
+  },
+  "header": {
+    "localNetwork": "Réseau local – Connecté",
+    "secure": "Sécurisé",
+    "connecting": "Connexion…",
+    "offline": "Hors ligne"
+  },
+  "target": {
+    "title": "Destination cible :",
+    "all": "Tous les appareils (Diffusion)",
+    "allSelected": "Envoi vers tous les appareils appairés",
+    "countSelected": "appareils sélectionnés",
+    "singleSelected": "appareil sélectionné",
+    "noOtherDevices": "Aucun autre appareil appairé en ligne"
+  },
+  "transfer": {
+    "consentTitle": "Demande de fichier entrant",
+    "consentFrom": "L'appareil",
+    "consentAction": "souhaite vous envoyer ce fichier :",
+    "accept": "Accepter & Télécharger",
+    "reject": "Refuser"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "desc": "Vue d'ensemble des connexions et appareils"
+  },
+  "qr": {
+    "title": "Code QR de connexion",
+    "desc": "Scannez depuis votre téléphone pour ouvrir l'application",
+    "scan": "Scannez ce code QR avec votre téléphone",
+    "orManualCode": "Ou saisir manuellement :",
+    "pageTitle": "Connecter le téléphone au PC",
+    "pageDesc": "Scannez le code QR pour ouvrir LinkDesk sur votre téléphone",
+    "pairing": "Appairage…",
+    "pairingDesc": "Appairage via QR",
+    "connecting": "Connexion…",
+    "success": "Appairé avec succès",
+    "refresh": "Actualiser",
+    "redirecting": "Redirection…",
+    "retry": "Réessayer",
+    "failed": "Échec de l'appairage",
+    "errorGenerate": "Impossible de générer le code QR"
+  },
+  "status": {
+    "local": "Serveur local"
+  },
+  "pairing": {
+    "title": "Appairage des appareils",
+    "desc": "Créez un code et entrez-le depuis le téléphone",
+    "create": "Créer un code",
+    "code": "Code d'appairage",
+    "expires": "Expire dans 2 minutes",
+    "codePlaceholder": "Entrez le code",
+    "verify": "Vérifier & Appairer",
+    "success": "Appairé avec succès",
+    "failed": "Échec de l'appairage",
+    "errors": {
+      "invalid": "Code invalide",
+      "used": "Code déjà utilisé",
+      "expired": "Code expiré",
+      "too_many_attempts": "Trop de tentatives, veuillez patienter",
+      "missing_code": "Veuillez entrer le code",
+      "rate_limited": "Trop de tentatives, veuillez patienter",
+      "error": "Erreur de connexion"
+    }
+  },
+  "devices": {
+    "title": "Appareils connectés",
+    "desc": "Gérer les appareils appairés",
+    "connected": "appareil(s) connecté(s)",
+    "pageDesc": "Voir et gérer les appareils sur le réseau local",
+    "refresh": "Actualiser",
+    "empty": "Aucun appareil connecté",
+    "disconnect": "Déconnecter"
+  },
+  "files": {
+    "title": "Fichiers",
+    "desc": "Transférer images, PDF, documents Office, archives, textes, code",
+    "pageDesc": "Transférer des fichiers dans les deux sens sans limite de taille",
+    "drop": "Glissez-déposez des fichiers ici",
+    "orClick": "ou cliquez pour sélectionner",
+    "selected": "Fichiers sélectionnés",
+    "upload": "Envoyer",
+    "uploading": "Envoi…",
+    "success": "Envoyé avec succès",
+    "failed": "Échec de l'envoi",
+    "empty": "Aucun fichier pour l'instant",
+    "received": "Fichiers sur le serveur",
+    "download": "Télécharger",
+    "delete": "Supprimer",
+    "errors": {
+      "file_not_allowed": "Type de fichier non autorisé",
+      "blocked_extension": "Fichiers exécutables interdits",
+      "invalid_path": "Nom de fichier invalide",
+      "extension_not_allowed": "Extension non supportée",
+      "no_extension": "Fichier sans extension"
+    }
+  },
+  "text": {
+    "title": "Texte & Liens",
+    "desc": "Envoyer du texte ou des liens entre appareils",
+    "pageDesc": "Partager textes et liens rapidement",
+    "placeholder": "Tapez du texte ou collez un lien…",
+    "send": "Envoyer",
+    "copy": "Copier",
+    "clear": "Effacer",
+    "sent": "Envoyé",
+    "history": "Messages récents"
+  },
+  "clipboard": {
+    "title": "Presse-papiers",
+    "desc": "Lire ou écrire le contenu du presse-papiers",
+    "pageDesc": "Transférer le contenu du presse-papiers",
+    "placeholder": "Contenu du presse-papiers…",
+    "read": "Lire",
+    "write": "Écrire",
+    "readOk": "Lu",
+    "readDenied": "Permission refusée",
+    "writeOk": "Copié",
+    "writeDenied": "Échec",
+    "sync": "Synchroniser avec les appareils",
+    "syncOk": "Synchronisé avec tous les appareils",
+    "syncFailed": "Échec de la synchronisation",
+    "remote": "De l'appareil :",
+    "useRemote": "Utiliser ceci",
+    "usingRemote": "Utilisation du presse-papiers distant"
+  },
+  "screen": {
+    "title": "Partage d'écran",
+    "desc": "Partager l'écran du PC avec le téléphone",
+    "pageDesc": "Voir l'écran du PC sur le téléphone",
+    "start": "Démarrer",
+    "stop": "Arrêter",
+    "error": "Échec du démarrage",
+    "broadcastTab": "Diffuser mon écran",
+    "viewerTab": "Regarder le flux",
+    "live": "EN DIRECT",
+    "waitingStream": "En attente du flux depuis le PC...",
+    "connectStream": "Regarder le flux",
+    "disconnectStream": "Déconnecter le flux",
+    "browserWarning": "Cliquez sur Démarrer pour choisir l'écran ou la fenêtre à diffuser via WebRTC"
+  },
+  "activity": {
+    "title": "Journal d'activité",
+    "desc": "Journal en direct de toutes les opérations",
+    "empty": "Aucune activité pour l'instant",
+    "wsConnected": "WebSocket connecté",
+    "wsConnecting": "Connexion…",
+    "wsDisconnected": "Déconnecté – nouvelle tentative…",
+    "clear": "Effacer le journal"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "desc": "Personnaliser l'apparence et la langue",
+    "appearance": "Apparence",
+    "appearanceDesc": "Personnaliser les couleurs et le mode",
+    "theme": "Thème",
+    "primaryColor": "Couleur principale",
+    "density": "Densité",
+    "textSize": "Taille du texte",
+    "small": "Petit",
+    "medium": "Moyen",
+    "large": "Grand",
+    "compact": "Compact",
+    "comfortable": "Confortable",
+    "reduceMotion": "Réduire les animations",
+    "language": "Langue",
+    "languageDesc": "Langue de l'interface",
+    "reset": "Réinitialiser",
+    "resetDesc": "Restaurer les valeurs par défaut",
+    "resetBtn": "Réinitialiser"
+  },
+  "about": {
+    "title": "À propos",
+    "desc": "À propos de LinkDesk Local",
+    "privacy": "Fonctionne uniquement en local, aucune donnée envoyée à des serveurs externes"
+  }
 }

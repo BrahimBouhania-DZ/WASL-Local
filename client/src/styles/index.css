@@ -207,11 +207,72 @@ input, select, textarea {
   font-size: 0.875rem;
 }
 
+/* ── Spin animation ─────────────────────────────────────── */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Mobile bottom navigation ───────────────────────────── */
+.mobile-nav {
+  display: none;
+}
+
 @media (max-width: 968px) {
   .layout {
     grid-template-columns: 1fr;
+    padding-bottom: 72px; /* room for mobile nav */
   }
+
   .sidebar {
     display: none;
   }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.25);
+  }
+
+  .mobile-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    min-width: 60px;
+    flex: 1;
+    padding: 0.5rem 0.25rem 0.6rem;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.65rem;
+    transition: color var(--transition), background var(--transition);
+    white-space: nowrap;
+  }
+
+  .mobile-nav-item.active {
+    color: var(--primary);
+    background: var(--primary)11;
+  }
+
+  .mobile-nav-item:hover {
+    color: var(--text-primary);
+  }
 }
+

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import i18n from '../i18n/config'
 
 export type ThemeMode = 'light' | 'dark' | 'auto'
 export type Density = 'compact' | 'comfortable'
@@ -28,6 +29,8 @@ const defaultSettings: Settings = {
   language: 'ar'
 }
 
+const RTL_LANGS = ['ar']
+
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined)
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
@@ -42,18 +45,34 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     localStorage.setItem('linkdesk_settings', JSON.stringify(settings))
     const root = document.documentElement
+
+    // Theme
     if (settings.theme === 'auto') {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
       root.setAttribute('data-theme', prefersDark ? 'dark' : 'light')
     } else {
       root.setAttribute('data-theme', settings.theme)
     }
+
+    // Density & text size
     root.setAttribute('data-density', settings.density)
     root.setAttribute('data-text-size', settings.textSize)
     root.style.setProperty('--primary', settings.primaryColor)
+
+    // Reduce motion
     if (settings.reduceMotion) {
       root.style.setProperty('scroll-behavior', 'auto')
+    } else {
+      root.style.removeProperty('scroll-behavior')
     }
+
+    // Language & text direction — the critical fix
+    if (i18n.language !== settings.language) {
+      i18n.changeLanguage(settings.language)
+    }
+    const isRtl = RTL_LANGS.includes(settings.language)
+    root.setAttribute('dir', isRtl ? 'rtl' : 'ltr')
+    root.setAttribute('lang', settings.language)
   }, [settings])
 
   const updateSettings = (patch: Partial<Settings>) => {
