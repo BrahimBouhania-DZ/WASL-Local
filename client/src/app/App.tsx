@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ensureAuthToken } from '../services/api'
 import { SettingsProvider } from '../context/SettingsContext'
 import { WsProvider } from '../context/WsContext'
 import { ActivityProvider } from '../context/ActivityContext'
@@ -20,6 +22,10 @@ import { SettingsPage } from '../pages/SettingsPage'
 import { AboutPage } from '../pages/AboutPage'
 
 function App() {
+  useEffect(() => {
+    ensureAuthToken()
+  }, [])
+
   return (
     <SettingsProvider>
       <ActivityProvider>

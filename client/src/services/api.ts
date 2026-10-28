@@ -72,6 +72,26 @@ export function getAuthHeaders(): Record<string, string> {
   return token ? { Authorization: `Bearer ${token}` } : {}
 }
 
+/**
+ * Ensures the client has an auth token, requesting a host token if running on host/PC
+ */
+export async function ensureAuthToken(): Promise<string | null> {
+  const token = localStorage.getItem('linkdesk_auth_token')
+  if (token) return token
+  try {
+    const res = await fetch(`${API_BASE}/auth/host-token`, { method: 'POST' })
+    const data = await res.json()
+    if (data.ok && data.token) {
+      localStorage.setItem('linkdesk_auth_token', data.token)
+      if (data.deviceId) localStorage.setItem('linkdesk_device_id', data.deviceId)
+      return data.token
+    }
+  } catch (e) {
+    // Host token not available or rate limited
+  }
+  return null
+}
+
 export async function disconnectDevice(id: string) {
   const res = await fetch(`${API_BASE}/devices/${id}`, {
     method: 'DELETE',
@@ -90,7 +110,9 @@ export async function listFiles() {
 }
 
 export function getDownloadUrl(savedName: string) {
-  return `${API_BASE}/files/download/${encodeURIComponent(savedName)}`
+  const token = localStorage.getItem('linkdesk_auth_token')
+  const base = `${API_BASE}/files/download/${encodeURIComponent(savedName)}`
+  return token ? `${base}?token=${encodeURIComponent(token)}` : base
 }
 
 export async function deleteFile(savedName: string) {

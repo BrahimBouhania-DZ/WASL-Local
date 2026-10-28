@@ -17,9 +17,38 @@ import { getSafeFilename, getUploadPath, recordFile, getFiles, deleteFile, getFi
 import { getLocalUrls } from './network/qr.js'
 import { addTextMessage, getTextMessages, clearTextMessages } from './text/manager.js'
 import { setClipboard, getClipboard, clearClipboard } from './clipboard/manager.js'
-import { validateDeviceToken } from './security/auth.js'
+import { validateDeviceToken, generateDeviceToken, revokeDeviceToken } from './security/auth.js'
+import path from 'path'
 
 startPairingCleanup()
+
+// ─── Auth Middleware Helper ────────────────────────────────────────────────
+// Returns the validated session or sends a 401 and returns null.
+async function requireAuth(request: any, reply: any) {
+  const authHeader = request.headers['authorization']
+  const tokenFromQuery = (request.query as any)?.token
+  const raw = authHeader || (tokenFromQuery ? `Bearer ${tokenFromQuery}` : undefined)
+  const session = validateDeviceToken(raw)
+  if (!session) {
+    reply.code(401).send({ error: 'unauthorized', reason: 'missing_or_invalid_token' })
+    return null
+  }
+  return session
+}
+
+// ─── WS Flood Protection ──────────────────────────────────────────────────
+const wsMessageCounters = new Map<string, { count: number; resetAt: number }>()
+function checkWsFlood(socketId: string): boolean {
+  const now = Date.now()
+  const entry = wsMessageCounters.get(socketId)
+  if (!entry || now > entry.resetAt) {
+    wsMessageCounters.set(socketId, { count: 1, resetAt: now + 1000 })
+    return true
+  }
+  entry.count++
+  if (entry.count > 40) return false // max 40 msgs/second per connection
+  return true
+}
 
 const fastify = Fastify({
   logger: {
@@ -82,7 +111,14 @@ function broadcastWS(type: string, payload: any, senderSocket?: any) {
 async function start() {
   try {
     await fastify.register(helmet, {
-      contentSecurityPolicy: false // Allows local scripts/media in dev
+      contentSecurityPolicy: false // Managed in index.html meta tag
+    })
+
+    // Security headers for all responses
+    fastify.addHook('onSend', async (_req, reply) => {
+      reply.header('X-Content-Type-Options', 'nosniff')
+      reply.header('X-Frame-Options', 'SAMEORIGIN')
+      reply.header('X-XSS-Protection', '1; mode=block')
     })
 
     await fastify.register(cors, {
@@ -207,8 +243,10 @@ async function start() {
       return { devices: getDevices() }
     })
 
-    fastify.delete('/devices/:id', async (request) => {
+    fastify.delete('/devices/:id', async (request, reply) => {
+      if (!await requireAuth(request, reply)) return
       const params = request.params as { id: string }
+      revokeDeviceToken(params.id)
       const ok = removeDevice(params.id)
       broadcastWS('devices:update', { devices: getDevices() })
       return { ok }
@@ -216,6 +254,7 @@ async function start() {
 
     // Files Routes
     fastify.post('/files/upload', async (request, reply) => {
+      if (!await requireAuth(request, reply)) return
       const ip = request.ip || 'unknown'
       const rl = checkRateLimit(`upload:${ip}`, 30, 60000, 60000)
       if (!rl.allowed) {
@@ -268,29 +307,36 @@ async function start() {
       return { ok: true, uploaded }
     })
 
-    fastify.get('/files/list', async () => {
+    fastify.get('/files/list', async (request, reply) => {
+      if (!await requireAuth(request, reply)) return
       const files = getFiles()
       return { files }
     })
 
     fastify.get('/files/download/:name', async (request, reply) => {
+      if (!await requireAuth(request, reply)) return
       const params = request.params as { name: string }
-      if (params.name.includes('..') || params.name.includes('/') || params.name.includes('\\')) {
+      // ─── Path Traversal Hardening ─────────────────────────────────────
+      const UPLOAD_DIR = path.resolve(process.cwd(), 'uploads')
+      const resolved = path.resolve(UPLOAD_DIR, params.name)
+      if (!resolved.startsWith(UPLOAD_DIR + path.sep) && resolved !== UPLOAD_DIR) {
         return reply.code(400).send({ error: 'invalid_name' })
       }
-      const filePath = getUploadPath(params.name)
-      if (!fs.existsSync(filePath)) {
+      if (!fs.existsSync(resolved)) {
         return reply.code(404).send({ error: 'not_found' })
       }
 
-      const meta = getFileBySavedName(params.name)
-      const downloadFilename = meta ? meta.originalName : params.name
+      const safeName = path.basename(resolved)
+      const meta = getFileBySavedName(safeName)
+      const downloadFilename = meta ? meta.originalName : safeName
 
       reply.header('Content-Disposition', `attachment; filename="${encodeURIComponent(downloadFilename)}"`)
-      return reply.send(fs.createReadStream(filePath, { highWaterMark: 1024 * 1024 }))
+      reply.header('X-Content-Type-Options', 'nosniff')
+      return reply.send(fs.createReadStream(resolved, { highWaterMark: 1024 * 1024 }))
     })
 
     fastify.delete('/files/:name', async (request, reply) => {
+      if (!await requireAuth(request, reply)) return
       const params = request.params as { name: string }
       const ok = deleteFile(params.name)
       if (ok) {
@@ -302,6 +348,7 @@ async function start() {
 
     // Text & Links Routes
     fastify.post('/text/send', async (request, reply) => {
+      if (!await requireAuth(request, reply)) return
       const parse = textMessageSchema.safeParse(request.body)
       if (!parse.success) {
         return reply.code(400).send({ error: 'invalid_payload' })
@@ -312,12 +359,14 @@ async function start() {
       return { ok: true, message: msg }
     })
 
-    fastify.get('/text/history', async () => {
+    fastify.get('/text/history', async (request, reply) => {
+      if (!await requireAuth(request, reply)) return
       return { messages: getTextMessages() }
     })
 
     // Clipboard Routes
     fastify.post('/clipboard/sync', async (request, reply) => {
+      if (!await requireAuth(request, reply)) return
       const parse = clipboardSchema.safeParse(request.body)
       if (!parse.success) {
         return reply.code(400).send({ error: 'invalid_payload' })
@@ -328,12 +377,14 @@ async function start() {
       return { ok: true, clipboard: entry }
     })
 
-    fastify.get('/clipboard/latest', async () => {
+    fastify.get('/clipboard/latest', async (request, reply) => {
+      if (!await requireAuth(request, reply)) return
       return { clipboard: getClipboard() }
     })
 
     // Ephemeral / Session Purge Route
     fastify.post('/session/purge', async (request, reply) => {
+      if (!await requireAuth(request, reply)) return
       clearAllFiles()
       clearTextMessages()
       clearClipboard()
@@ -344,6 +395,18 @@ async function start() {
       })
 
       return { ok: true, message: 'session_data_purged' }
+    })
+
+    // Token generation for PC (host) — grants a permanent host token
+    fastify.post('/auth/host-token', async (request, reply) => {
+      const ip = request.ip || 'unknown'
+      const rl = checkRateLimit(`hosttoken:${ip}`, 5, 60000, 120000)
+      if (!rl.allowed) {
+        return reply.code(429).send({ error: 'rate_limited', retryAfter: rl.retryAfter })
+      }
+      const deviceId = `host-${ip}-${Date.now()}`
+      const token = generateDeviceToken(deviceId)
+      return { ok: true, token, deviceId }
     })
 
     // WebSocket Server Handler
@@ -362,7 +425,15 @@ async function start() {
         }
       }
 
+      const socketId = `ws-${Date.now()}-${Math.random()}`
+      ;(socket as any).__id = socketId
+
       socket.on('message', (message: any) => {
+        // ─── WS Flood Protection ───────────────────────────────────────────
+        if (!checkWsFlood((socket as any).__id)) {
+          socket.send(JSON.stringify({ type: 'error', message: 'rate_limited', retryAfter: 1000 }))
+          return
+        }
         try {
           const data = JSON.parse(message.toString())
 
@@ -465,7 +536,7 @@ async function start() {
       socket.send(
         JSON.stringify({
           type: 'welcome',
-          message: 'LinkDesk Local WebSocket Connected',
+          message: 'WASL Local WebSocket Connected',
           devices: getDevices()
         })
       )
