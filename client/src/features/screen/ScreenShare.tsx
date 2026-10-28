@@ -252,55 +252,59 @@ export function ScreenShare() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      {/* Mode Switch Tabs */}
-      <div style={{ display: 'flex', gap: '0.75rem', background: 'var(--bg-secondary)', padding: '0.35rem', borderRadius: 'var(--radius-md)', width: 'fit-content' }}>
-        <button
-          className="btn"
-          style={{
-            background: mode === 'broadcast' ? 'var(--primary)' : 'transparent',
-            color: mode === 'broadcast' ? '#fff' : 'var(--text-secondary)',
-            border: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.5rem 1rem'
-          }}
-          onClick={() => setMode('broadcast')}
-        >
-          <Monitor size={18} />
-          {isMobile ? 'بث الشاشة (للحاسوب)' : (t('screen.broadcastTab') || 'بث شاشتي')}
-        </button>
+      {/* Mode Switch Tabs - Only show on Desktop / PC */}
+      {!isMobile && (
+        <div style={{ display: 'flex', gap: '0.75rem', background: 'var(--bg-secondary)', padding: '0.35rem', borderRadius: 'var(--radius-md)', width: 'fit-content' }}>
+          <button
+            className="btn"
+            style={{
+              background: mode === 'broadcast' ? 'var(--primary)' : 'transparent',
+              color: mode === 'broadcast' ? '#0A111E' : 'var(--text-secondary)',
+              fontWeight: mode === 'broadcast' ? 700 : 500,
+              border: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.5rem 1rem'
+            }}
+            onClick={() => setMode('broadcast')}
+          >
+            <Monitor size={18} />
+            {t('screen.broadcastTab') || 'بث شاشتي'}
+          </button>
 
-        <button
-          className="btn"
-          style={{
-            background: mode === 'view' ? 'var(--primary)' : 'transparent',
-            color: mode === 'view' ? '#fff' : 'var(--text-secondary)',
-            border: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.5rem 1rem',
-            position: 'relative'
-          }}
-          onClick={() => setMode('view')}
-        >
-          <Smartphone size={18} />
-          {isMobile ? 'مشاهدة شاشة الحاسوب' : (t('screen.viewerTab') || 'مشاهدة البث')}
-          {remoteActive && (
-            <span
-              style={{
-                display: 'inline-block',
-                width: '8px',
-                height: '8px',
-                borderRadius: '50%',
-                background: 'var(--success)',
-                marginLeft: '0.25rem'
-              }}
-            />
-          )}
-        </button>
-      </div>
+          <button
+            className="btn"
+            style={{
+              background: mode === 'view' ? 'var(--primary)' : 'transparent',
+              color: mode === 'view' ? '#0A111E' : 'var(--text-secondary)',
+              fontWeight: mode === 'view' ? 700 : 500,
+              border: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.5rem 1rem',
+              position: 'relative'
+            }}
+            onClick={() => setMode('view')}
+          >
+            <Smartphone size={18} />
+            {t('screen.viewerTab') || 'مشاهدة البث'}
+            {remoteActive && (
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  background: 'var(--success)',
+                  marginLeft: '0.25rem'
+                }}
+              />
+            )}
+          </button>
+        </div>
+      )}
 
       {/* Broadcaster Section */}
       {mode === 'broadcast' && (
