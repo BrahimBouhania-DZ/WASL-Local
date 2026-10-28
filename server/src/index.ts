@@ -13,10 +13,10 @@ import { createQRPairSession, getQRPairSession } from './pairing/qr.js'
 import { addDevice, getDevices, removeDevice, bindSession, unbindSession } from './devices/manager.js'
 import { checkRateLimit, resetRateLimit } from './security/rateLimit.js'
 import { isAllowedFile } from './files/types.js'
-import { getSafeFilename, getUploadPath, recordFile, getFiles, deleteFile, getFileBySavedName } from './files/manager.js'
+import { getSafeFilename, getUploadPath, recordFile, getFiles, deleteFile, getFileBySavedName, clearAllFiles } from './files/manager.js'
 import { getLocalUrls } from './network/qr.js'
-import { addTextMessage, getTextMessages } from './text/manager.js'
-import { setClipboard, getClipboard } from './clipboard/manager.js'
+import { addTextMessage, getTextMessages, clearTextMessages } from './text/manager.js'
+import { setClipboard, getClipboard, clearClipboard } from './clipboard/manager.js'
 import { validateDeviceToken } from './security/auth.js'
 
 startPairingCleanup()
@@ -330,6 +330,20 @@ async function start() {
 
     fastify.get('/clipboard/latest', async () => {
       return { clipboard: getClipboard() }
+    })
+
+    // Ephemeral / Session Purge Route
+    fastify.post('/session/purge', async (request, reply) => {
+      clearAllFiles()
+      clearTextMessages()
+      clearClipboard()
+
+      broadcastWS('session:purged', {
+        timestamp: Date.now(),
+        message: 'All shared files and history have been wiped.'
+      })
+
+      return { ok: true, message: 'session_data_purged' }
     })
 
     // WebSocket Server Handler

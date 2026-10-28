@@ -425,9 +425,13 @@ export function Files() {
                         <span>{formatSize(f.size)}</span> &middot; <span>{new Date(f.uploadedAt).toLocaleTimeString()}</span>
                       </div>
 
-                      {f.senderName && (
-                        <div style={{ fontSize: '0.75rem', color: 'var(--primary)', marginTop: '0.25rem', fontWeight: 500 }}>
-                          مرسل من: {f.senderName}
+                      {f.senderDeviceId === myDeviceId ? (
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem', color: 'var(--secondary)', marginTop: '0.35rem', background: 'rgba(0, 136, 255, 0.1)', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>
+                          <span>📤 أرسلته أنت من هذا الجهاز</span>
+                        </div>
+                      ) : (
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem', color: 'var(--success)', marginTop: '0.35rem', background: 'rgba(16, 185, 129, 0.12)', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>
+                          <span>📥 وارد من: {f.senderName || 'جهاز متصل'}</span>
                         </div>
                       )}
                     </div>

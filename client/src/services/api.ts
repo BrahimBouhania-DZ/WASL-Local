@@ -218,3 +218,13 @@ export async function getLatestClipboard() {
   })
   return res.json()
 }
+
+// ─── Session Purge ────────────────────────────────────────────────────────────
+
+export async function purgeSessionApi() {
+  const res = await fetch(`${API_BASE}/session/purge`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getAuthHeaders() }
+  })
+  return res.json()
+}

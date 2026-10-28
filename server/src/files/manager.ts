@@ -134,6 +134,25 @@ export function getTempPath(filename: string): string {
   return path.join(TMP_DIR, filename)
 }
 
+export function clearAllFiles(): boolean {
+  try {
+    for (const [savedName] of fileRegistry.entries()) {
+      const filePath = path.join(UPLOAD_DIR, savedName)
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath)
+      }
+    }
+    fileRegistry.clear()
+    if (fs.existsSync(META_FILE)) {
+      fs.unlinkSync(META_FILE)
+    }
+    return true
+  } catch (err) {
+    console.error('Failed to clear files:', err)
+    return false
+  }
+}
+
 export function ensureUploadDir() {
   if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true })
 }

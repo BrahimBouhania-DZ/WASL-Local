@@ -3,15 +3,40 @@ import { Wifi, WifiOff, Shield, Loader } from 'lucide-react'
 import { useSettings } from '../../context/SettingsContext'
 import { useWs } from '../../context/WsContext'
 
+import { purgeSessionApi } from '../../services/api'
+import { Trash2 } from 'lucide-react'
+import { useToast } from '../../context/ToastContext'
+
 export function Header() {
   const { t } = useTranslation()
   const { settings, updateSettings } = useSettings()
   const { status } = useWs()
+  const { success, warning } = useToast()
 
   const toggleTheme = () => {
     const themes: Array<'light' | 'dark' | 'auto'> = ['light', 'dark', 'auto']
     const idx = themes.indexOf(settings.theme)
     updateSettings({ theme: themes[(idx + 1) % themes.length] })
+  }
+
+  const handlePurgeSession = async () => {
+    const confirmed = window.confirm('هل أنت متأكد من إنهاء الجلسة ومسح جميع الملفات والبيانات المتبادلة نهائياً؟')
+    if (!confirmed) return
+
+    try {
+      await purgeSessionApi()
+      // Clear local storage pairing tokens
+      localStorage.removeItem('linkdesk_device_id')
+      localStorage.removeItem('linkdesk_auth_token')
+      localStorage.removeItem('linkdesk_session_id')
+      localStorage.removeItem('linkdesk_selected_targets')
+      success('تم مسح بيانات الجلسة بالكامل وإعادة التهيئة')
+      setTimeout(() => {
+        window.location.reload()
+      }, 800)
+    } catch {
+      warning('تعذر إتمام مسح الجلسة')
+    }
   }
 
   const wsColor =
@@ -44,6 +69,16 @@ export function Header() {
       </div>
 
       <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+        <button
+          className="btn"
+          onClick={handlePurgeSession}
+          style={{ fontSize: '0.75rem', color: 'var(--error)', borderColor: 'rgba(239, 68, 68, 0.3)', display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.35rem 0.65rem' }}
+          title="إنهاء الجلسة ومسح البيانات"
+        >
+          <Trash2 size={13} />
+          <span>مسح الجلسة</span>
+        </button>
+
         <button className="btn" onClick={toggleTheme} style={{ fontSize: '0.8rem' }}>
           {settings.theme === 'dark' ? '☀️' : settings.theme === 'light' ? '🔆' : '🌙'}
         </button>

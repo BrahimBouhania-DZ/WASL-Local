@@ -138,52 +138,59 @@ export function TextShare() {
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '380px', overflowY: 'auto' }}>
-            {messages.map((m) => (
-              <div
-                key={m.id}
-                style={{
-                  padding: '0.75rem',
-                  background: 'var(--bg-secondary)',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--border)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.4rem'
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                  <span style={{ fontWeight: 600, color: 'var(--primary)' }}>{m.from}</span>
-                  <span>{new Date(m.timestamp).toLocaleTimeString()}</span>
-                </div>
+            {messages.map((m) => {
+              const isMine = m.senderDeviceId === (localStorage.getItem('linkdesk_device_id') || '')
+              return (
+                <div
+                  key={m.id}
+                  style={{
+                    padding: '0.75rem',
+                    background: isMine ? 'rgba(0, 212, 255, 0.08)' : 'var(--bg-secondary)',
+                    borderRadius: 'var(--radius-md)',
+                    border: `1px solid ${isMine ? 'rgba(0, 212, 255, 0.25)' : 'var(--border)'}`,
+                    alignSelf: isMine ? 'flex-start' : 'flex-end',
+                    maxWidth: '85%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.4rem'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                    <span style={{ fontWeight: 600, color: isMine ? 'var(--primary)' : 'var(--success)' }}>
+                      {isMine ? 'أنت (هذا الجهاز)' : `📥 من: ${m.from}`}
+                    </span>
+                    <span>{new Date(m.timestamp).toLocaleTimeString()}</span>
+                  </div>
 
-                <div style={{ fontSize: '0.9rem', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
-                  {m.text}
-                </div>
+                  <div style={{ fontSize: '0.9rem', wordBreak: 'break-word', whiteSpace: 'pre-wrap', color: 'var(--text-primary)' }}>
+                    {m.text}
+                  </div>
 
-                <div style={{ display: 'flex', gap: '0.5rem', alignSelf: 'flex-end', marginTop: '0.2rem' }}>
-                  {m.isUrl && (
-                    <a
-                      href={m.text}
-                      target="_blank"
-                      rel="noreferrer"
+                  <div style={{ display: 'flex', gap: '0.5rem', alignSelf: 'flex-end', marginTop: '0.2rem' }}>
+                    {m.isUrl && (
+                      <a
+                        href={m.text}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn"
+                        style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
+                      >
+                        <ExternalLink size={13} />
+                        فتح
+                      </a>
+                    )}
+                    <button
                       className="btn"
+                      onClick={() => copyText(m.text, m.id)}
                       style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
                     >
-                      <ExternalLink size={13} />
-                      فتح
-                    </a>
-                  )}
-                  <button
-                    className="btn"
-                    onClick={() => copyText(m.text, m.id)}
-                    style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
-                  >
-                    {copied === m.id ? <Check size={13} color="var(--success)" /> : <Copy size={13} />}
-                    {copied === m.id ? 'تم' : t('text.copy')}
-                  </button>
+                      {copied === m.id ? <Check size={13} color="var(--success)" /> : <Copy size={13} />}
+                      {copied === m.id ? 'تم' : t('text.copy')}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
       </div>

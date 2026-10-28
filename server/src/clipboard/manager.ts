@@ -30,3 +30,7 @@ export function setClipboard(
 export function getClipboard(): ClipboardEntry | null {
   return latestClipboard
 }
+
+export function clearClipboard() {
+  latestClipboard = null
+}
