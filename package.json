@@ -1,8 +1,9 @@
 {
-  "name": "linkdesk-local",
+  "name": "wasl-local",
+  "productName": "WASL Local",
   "private": true,
   "version": "0.1.0",
-  "description": "LinkDesk Local - connect phone to PC on local network",
+  "description": "WASL Local - وَصْل: ربط ومشاركة سريعة وآمنة بين الهاتف والحاسوب على الشبكة المحلية",
   "main": "electron/main.cjs",
   "type": "module",
   "workspaces": [
@@ -28,5 +29,25 @@
     "happy-dom": "^21.0.4",
     "typescript-eslint": "^8.72.1",
     "wait-on": "^8.0.1"
+  },
+  "build": {
+    "appId": "com.wasl.local",
+    "productName": "WASL Local",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "electron/**/*",
+      "client/dist/**/*",
+      "server/dist/**/*",
+      "package.json"
+    ],
+    "linux": {
+      "target": ["AppImage"],
+      "category": "Utility"
+    },
+    "win": {
+      "target": ["nsis"]
+    }
   }
 }
